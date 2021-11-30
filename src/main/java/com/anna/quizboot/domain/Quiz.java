@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Quiz {
     @Value("${quiz.questions}")
-    private String questions;
+    public String questions;
 
     @Value("${quiz.answers}")
-    private String answers;
+    public String answers;
 }
