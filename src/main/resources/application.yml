@@ -1,3 +1,10 @@
 quiz:
   questions: src/main/resources/META-INF/questions.csv
   answers: src/main/resources/META-INF/answers.csv
+spring:
+  messages:
+    basename: messages
+LocaleResolver:
+  language: ru
+  country: RU
+  bName: messages

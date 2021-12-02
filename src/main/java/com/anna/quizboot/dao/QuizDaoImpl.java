@@ -1,5 +1,6 @@
 package com.anna.quizboot.dao;
 
+import com.anna.quizboot.conf.LocaleResolver;
 import com.anna.quizboot.domain.Quiz;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -16,9 +17,11 @@ import static com.anna.quizboot.csvreader.Reader.getReader;
 @Service
 public class QuizDaoImpl implements QuizDao {
     private final Quiz quiz;
+    private final LocaleResolver localeResolver;
 
-    public QuizDaoImpl(Quiz quiz) {
+    public QuizDaoImpl(Quiz quiz, LocaleResolver localeResolver) {
         this.quiz = quiz;
+        this.localeResolver = localeResolver;
     }
 
     @Override
@@ -60,10 +63,13 @@ public class QuizDaoImpl implements QuizDao {
     private Map<String, List<String>> getQuizMap(Iterable<CSVRecord> records) {
         Map<String, List<String>> qaMapper = new HashMap<>();
         assert records != null;
+        var resourceBundle = localeResolver.getBundle();
+
         for (CSVRecord record : records) {
-            String country = record.get("question");
-            String opt1 = record.get("opt1");
-            String opt2 = record.get("opt2");
+            String country = resourceBundle.getString(record.get("question"));
+
+            String opt1 = resourceBundle.getString(record.get("opt1"));
+            String opt2 = resourceBundle.getString(record.get("opt2"));
             qaMapper.put(country, List.of(opt1, opt2));
         }
         return qaMapper;
@@ -72,9 +78,10 @@ public class QuizDaoImpl implements QuizDao {
     private Map<String, String> getAnswerMap(Iterable<CSVRecord> records) {
         Map<String, String> answerBase = new HashMap<>();
         assert records != null;
+        var resourceBundle = localeResolver.getBundle();
         for (CSVRecord record : records) {
-            String question = record.get("question");
-            String answer = record.get("answer");
+            String question = resourceBundle.getString(record.get("question"));
+            String answer = resourceBundle.getString(record.get("answer"));
             answerBase.put(question, answer);
         }
         return answerBase;

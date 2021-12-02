@@ -1,5 +1,6 @@
 package com.anna.quizboot.quizservice;
 
+import com.anna.quizboot.conf.LocaleResolver;
 import com.anna.quizboot.dao.QuizDao;
 import com.anna.quizboot.quizanswerservice.AnswerService;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,13 @@ import java.util.Map;
 public class QuizServiceImpl implements QuizService{
     private final QuizDao questionDao;
     private final AnswerService answerService;
+    private final LocaleResolver localeResolver;
 
-    public QuizServiceImpl(QuizDao questionDao, AnswerService answerService) {
+
+    public QuizServiceImpl(QuizDao questionDao, AnswerService answerService, LocaleResolver localeResolver) {
         this.questionDao = questionDao;
         this.answerService = answerService;
+        this.localeResolver = localeResolver;
     }
 
     @PostConstruct
@@ -24,15 +28,17 @@ public class QuizServiceImpl implements QuizService{
         Map<String, List<String>> questionBase = uploadQuiz();
         Map<String, String> answerBase = uploadAnswers();
 
-        System.out.println("Enter your name and surname: \n");
+        var localBundle = localeResolver.getBundle();
+
+        System.out.printf("%s: \n", localBundle.getString("name-request"));
 
         String name = answerService.getNames();
-        System.out.printf("Ok, %s, now please print the correct answers or \"-\":\n", name);
+        System.out.printf(localBundle.getString("options"), name);
 
         List<String> answers = answerService.getQuizAnswers(questionBase, answerBase);
 
         if (!answers.isEmpty() && answers.size() > questionBase.size() / 2) {
-            System.out.printf("\n%s, test is passed with score %d of %d\n", name, answers.size(), questionBase.size());
+            System.out.printf((localBundle.getString("result") + "\n"), name, answers.size(), questionBase.size());
             answers.forEach(System.out::println);
         } else {
             System.out.printf("%s, time to search some google :)", name);
