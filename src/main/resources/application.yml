@@ -4,7 +4,12 @@ quiz:
 spring:
   messages:
     basename: messages
-LocaleResolver:
+LocaleManager:
   language: ru
   country: RU
   bName: messages
+DaoHelper:
+  question: question
+  answer: answer
+  option-1: opt1
+  option-2: opt2

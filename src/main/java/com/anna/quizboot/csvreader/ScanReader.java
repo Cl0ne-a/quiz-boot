@@ -2,10 +2,11 @@ package com.anna.quizboot.csvreader;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.Reader;
 
-public interface Reader {
-    static java.io.Reader getReader(String source) {
-        java.io.Reader questions = null;
+public interface ScanReader {
+    static Reader getReader(String source) {
+        Reader questions = null;
         try {
             questions = new FileReader(source);
         } catch (FileNotFoundException e) {

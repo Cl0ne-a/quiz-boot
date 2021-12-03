@@ -1,6 +1,6 @@
 package com.anna.quizboot.quizanswerservice;
 
-import com.anna.quizboot.conf.LocaleResolver;
+import com.anna.quizboot.conf.LocaleManager;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,9 +11,10 @@ import java.util.Scanner;
 @Service
 public class AnswerServiceImpl implements AnswerService{
     private final Scanner scanner;
-    private final LocaleResolver localeResolver;
-    public AnswerServiceImpl(LocaleResolver localeResolver) {
-        this.localeResolver = localeResolver;
+    private final LocaleManager localeManager;
+
+    public AnswerServiceImpl(LocaleManager localeManager) {
+        this.localeManager = localeManager;
         this.scanner = new Scanner(System.in);
     }
 
@@ -21,7 +22,7 @@ public class AnswerServiceImpl implements AnswerService{
     public String getNames() {
         String name;
         while ((name = scanner.nextLine()).isEmpty()) {
-            System.out.println(localeResolver.getBundle().getString("name-request"));
+            System.out.println(localeManager.getBundle().getString("name-request"));
         }
         return name;
     }
@@ -29,7 +30,7 @@ public class AnswerServiceImpl implements AnswerService{
     @Override
     public List<String> getQuizAnswers(Map<String, List<String>> questionBase, Map<String, String> answerBase) {
         List<String> answers = new ArrayList<>();
-        var choice = localeResolver.getBundle().getString("choice");
+        var choice = localeManager.getBundle().getString("choice");
         questionBase.forEach((key, valueList) -> {
             System.out.printf("\n%s?", key);
             System.out.printf(choice, valueList.get(0), valueList.get(1));

@@ -8,13 +8,13 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 @Configuration
-public class LocaleResolver {
+public class LocaleManager {
 
-    @Value("${LocaleResolver.language}")
+    @Value("${LocaleManager.language}")
     String language;
-    @Value("${LocaleResolver.country}")
+    @Value("${LocaleManager.country}")
     String country;
-    @Value("${LocaleResolver.bName}")
+    @Value("${LocaleManager.bName}")
     String baseName;
 
     @Bean
