@@ -23,18 +23,7 @@ public class QuizDaoImpl implements QuizDao {
 
     @Override
     public Map<String, List<String>> quiz() {
-        String source = this.quiz.questions;
-        Reader questions = getReader(source);
-        Iterable<CSVRecord> records = null;
-        try {
-            assert questions != null;
-            records = CSVFormat.RFC4180.withHeader(
-                            "question",
-                            "opt1", "opt2")
-                    .parse(questions);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Iterable<CSVRecord> records = daoHelper.getCsvRecords(this.quiz.questions);
         assert records != null;
         return this.daoHelper.getQuizMap(records);
     }

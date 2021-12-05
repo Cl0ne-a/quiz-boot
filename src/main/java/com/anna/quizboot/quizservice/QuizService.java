@@ -1,54 +1,51 @@
 package com.anna.quizboot.quizservice;
 
-import com.anna.quizboot.conf.LocaleManager;
-import com.anna.quizboot.dao.QuizDao;
+import com.anna.quizboot.conf.LocalesRepository;
+import com.anna.quizboot.dao.QuizLoader;
 import com.anna.quizboot.quizanswerservice.AnswerService;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class QuizService {
-    private final QuizDao questionDao;
+    private final QuizLoader quizLoader;
     private final AnswerService answerService;
-    private final LocaleManager localeManager;
+    private final LocalesRepository localesRepository;
 
-
-    public QuizService(QuizDao questionDao, AnswerService answerService, LocaleManager localeManager) {
-        this.questionDao = questionDao;
+    public QuizService(QuizLoader quizLoader,
+                       AnswerService answerService,
+                       LocalesRepository localesRepository) {
+        this.quizLoader = quizLoader;
         this.answerService = answerService;
-        this.localeManager = localeManager;
+        this.localesRepository = localesRepository;
+
+        this.questionInit();
     }
 
-    @PostConstruct
     public void questionInit() {
-        Map<String, List<String>> questionBase = uploadQuiz();
-        Map<String, String> answerBase = uploadAnswers();
+        Map<String, List<String>> questionBase =
+                quizLoader.uploadQuiz();
+        Map<String, String> answerBase =
+                quizLoader.uploadAnswers();
 
-        var localBundle = localeManager.getBundle();
+        System.out.printf("%s: \n", localesRepository.requestName());
 
-        System.out.printf("%s: \n", localBundle.getString("name-request"));
+        String name = answerService.getNames(localesRepository.requestName());
+        System.out.printf(localesRepository.requestOptions(), name);
 
-        String name = answerService.getNames();
-        System.out.printf(localBundle.getString("options"), name);
-
-        List<String> answers = answerService.getQuizAnswers(questionBase, answerBase);
+        List<String> answers = answerService
+                .getQuizAnswers(
+                        questionBase,
+                        answerBase,
+                        localesRepository.localManagerGetChoice());
 
         if (!answers.isEmpty() && answers.size() > questionBase.size() / 2) {
-            System.out.printf((localBundle.getString("result") + "\n"), name, answers.size(), questionBase.size());
+            System.out.printf((localesRepository.getResult() + "\n"), name, answers.size(), questionBase.size());
             answers.forEach(System.out::println);
         } else {
-            System.out.printf(localBundle.getString("advice")+ "\n", name);
+            System.out.printf(localesRepository.getAdvice() + "\n", name);
         }
-    }
-
-    private Map<String, List<String>> uploadQuiz() {
-        return questionDao.quiz();
-    }
-
-    private Map<String, String> uploadAnswers() {
-        return questionDao.answerMap();
     }
 }
