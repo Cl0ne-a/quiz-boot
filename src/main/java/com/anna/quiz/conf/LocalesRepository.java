@@ -1,4 +1,4 @@
-package com.anna.quizboot.conf;
+package com.anna.quiz.conf;
 
 public interface LocalesRepository {
     String localManagerGetChoice();

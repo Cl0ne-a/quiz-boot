@@ -1,4 +1,4 @@
-package com.anna.quizboot.conf;
+package com.anna.quiz.conf;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
