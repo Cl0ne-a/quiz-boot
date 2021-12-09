@@ -4,6 +4,7 @@ import com.anna.quiz.domain.Quiz;
 import com.anna.quiz.quizinitializer.Initializer;
 import com.anna.quiz.scanperformer.ScanPerformerImpl;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,6 +40,7 @@ class AnswersLoaderImplTest {
         }
     }
 
+    @DisplayName("возвращает ди соответствующие данные в соответствующей локали: ")
     @Test
     void loadData() {
         Map<String, String> expected = Map.of(
