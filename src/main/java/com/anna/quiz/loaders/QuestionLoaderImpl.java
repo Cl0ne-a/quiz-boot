@@ -21,20 +21,17 @@ public class QuestionLoaderImpl implements DataLoader {
     private Quiz quiz;
     @Autowired
     private LocaleManager localeManager;
-    @Value("${DaoHelper.question}")
+    @Value("${DataLoader.question}")
     private String question;
-    @Value("${DaoHelper.option-1}")
+    @Value("${DataLoader.option-1}")
     private String optionA;
-    @Value("${DaoHelper.option-2}")
+    @Value("${DataLoader.option-2}")
     private String optionB;
 
     @Override
     public Map<String, List<String>> loadData() {
-        // get quiz source from quiz
-        String source = quiz.questions;
-        // read data
+        String source = quiz.getQuestions();
         var questions = ScanReader.readCsv(source);
-        // transform to Map
         var iterableFromRecords = records(questions);
 
         return composeMap(iterableFromRecords);

@@ -20,23 +20,21 @@ public class AnswersLoaderImpl implements DataLoader{
     private Quiz quiz;
     @Autowired
     private LocaleManager localeManager;
-    @Value("${DaoHelper.question}")
+    @Value("${DataLoader.question}")
     private String question;
-    @Value("${DaoHelper.option-1}")
+    @Value("${DataLoader.option-1}")
     private String answer;
 
     @Override
     public Map<String, String> loadData() {
-        // get quiz source from quiz
-        String source = quiz.answers;
-        // read data
-        var answers = ScanReader.readCsv(source);
-        // transform to Map
-        var iterableFromRecords = records(answers);
+        String source = quiz.getAnswers();
+
+        var iterableFromRecords = records(source);
         return composeMap(iterableFromRecords);
     }
 
-    private Iterable<CSVRecord> records(Reader answers) {
+    private Iterable<CSVRecord> records(String source) {
+        var answers = ScanReader.readCsv(source);
         Iterable<CSVRecord> records = null;
         try {
             records = CSVFormat.RFC4180.withHeader(

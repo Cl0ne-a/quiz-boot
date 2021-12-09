@@ -5,7 +5,6 @@ import com.anna.quiz.scanperformer.ScanPerformerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +12,7 @@ import java.util.Map;
 public class Initializer {
     @Autowired
     @Qualifier("questionLoaderImpl")
-    private DataLoader<String, java.util.List<String>> questionLoader;
+    private DataLoader<String, List<String>> questionLoader;
     @Autowired
     @Qualifier("answersLoaderImpl")
     private DataLoader<String, String> answersLoader;
@@ -36,3 +35,4 @@ public class Initializer {
         tester.testStudent(test, answersFromDB).forEach(System.out::println);
     }
 }
+
