@@ -15,7 +15,6 @@ import java.util.Scanner;
 
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 class ScanPerformerImplTest {
     @Autowired
@@ -37,8 +36,8 @@ class ScanPerformerImplTest {
         when(localesRepository.requestName()).thenReturn("Введите ваше имя");
         when(scanner.nextLine()).thenReturn(name);
 
-        scanPerformer.requestName();
-        Assertions.assertEquals(scanPerformer.requestName(), name);
+        String receivedName = scanPerformer.requestName();
+        Assertions.assertEquals(receivedName, name);
     }
 
     @Test

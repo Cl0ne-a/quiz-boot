@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +20,15 @@ public class Initializer {
     @Autowired
     private ScanPerformerImpl tester;
 
-    @PostConstruct
+    public Initializer(@Qualifier(value = "questionLoaderImpl") DataLoader<String, List<String>> questionLoader,
+                       @Qualifier(value = "answersLoaderImpl")DataLoader<String, String> answersLoader,
+                       ScanPerformerImpl tester) {
+        this.questionLoader = questionLoader;
+        this.answersLoader = answersLoader;
+        this.tester = tester;
+        this.init();
+    }
+
     public void init() {
         Map<String, List<String>> test = questionLoader.loadData();
         Map<String, String> answersFromDB = answersLoader.loadData();
