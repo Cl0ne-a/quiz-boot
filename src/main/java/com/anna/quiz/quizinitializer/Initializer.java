@@ -26,6 +26,6 @@ public class Initializer {
         Map<String, List<String>> test = questionLoader.loadData();
         Map<String, String> answersFromDB = answersLoader.loadData();
 
-        tester.testStudent(test, answersFromDB);
+        tester.testStudent(test, answersFromDB).forEach(System.out::println);
     }
 }

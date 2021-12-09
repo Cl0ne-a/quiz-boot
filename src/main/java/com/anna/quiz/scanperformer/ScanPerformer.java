@@ -5,5 +5,8 @@ import java.util.Map;
 
 public interface ScanPerformer {
     String requestName();
-    void testStudent(Map<String, List<String>> quiz, Map<String, String> correctAnswers);
+    List<String> testStudent(Map<String, List<String>> quiz, Map<String, String> correctAnswers);
+    void firstInstruction();
+    Map<String, String> test(Map<String, List<String>> quiz);
+    List<String> check(Map<String, String> stdIn, Map<String, String> correctAnswers);
 }

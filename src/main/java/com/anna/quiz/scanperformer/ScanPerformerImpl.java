@@ -35,18 +35,20 @@ public class ScanPerformerImpl implements ScanPerformer{
     }
 
     @Override
-    public void testStudent(Map<String, List<String>> quiz, Map<String, String> correctAnswers) {
+    public List<String> testStudent(Map<String, List<String>> quiz, Map<String, String> correctAnswers) {
         firstInstruction();
         Map<String, String> answersFromStudent = test(quiz);
-        check(answersFromStudent, correctAnswers);
+        return check(answersFromStudent, correctAnswers);
     }
 
-    private void firstInstruction() {
+    @Override
+    public void firstInstruction() {
         String name = requestName();
         System.out.printf(localesRepository.requestOptions(), name);
     }
 
-    private Map<String, String> test(Map<String, List<String>> quiz) {
+    @Override
+    public Map<String, String> test(Map<String, List<String>> quiz) {
         Map<String, String> res = new HashMap<>();
         for (String question: quiz.keySet()) {
             System.out.printf(question + localesRepository.localManagerGetChoice(), quiz.get(question).get(0), quiz.get(question).get(1));
@@ -56,7 +58,8 @@ public class ScanPerformerImpl implements ScanPerformer{
         return res;
     }
 
-    private void check(Map<String, String> stdIn, Map<String, String> correctAnswers) {
+    @Override
+    public List<String> check(Map<String, String> stdIn, Map<String, String> correctAnswers) {
         List<String> testResult = new ArrayList<>();
         stdIn.forEach((key, val) -> {
             if (!correctAnswers.get(key).equalsIgnoreCase(val)) {
@@ -68,6 +71,6 @@ public class ScanPerformerImpl implements ScanPerformer{
         } else {
             System.out.printf(localesRepository.getResult(), name);
         }
-        testResult.forEach(System.out::println);
+        return testResult;
     }
 }
