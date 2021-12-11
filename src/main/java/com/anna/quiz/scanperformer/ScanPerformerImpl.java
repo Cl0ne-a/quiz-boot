@@ -1,6 +1,7 @@
 package com.anna.quiz.scanperformer;
 
 import com.anna.quiz.conf.LocalesRepository;
+import com.anna.quiz.scannerwrapper.ScannerWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,26 +9,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 @Service
 public class ScanPerformerImpl implements ScanPerformer{
 
-    private final Scanner scanner;
     public String name;
 
     @Autowired
+    private ScannerWrapper scannerWrapper;
+    @Autowired
     private LocalesRepository localesRepository;
-
-    public ScanPerformerImpl() {
-        this.scanner = new Scanner(System.in);
-    }
 
     @Override
     public String requestName() {
         System.out.println(localesRepository.requestName());
         String name;
-        while ((name = scanner.nextLine()).isEmpty()) {
+        while ((name = scannerWrapper.getLine()).isEmpty()) {
             System.out.println(localesRepository.requestName());
         }
         this.name = name;
@@ -52,7 +49,7 @@ public class ScanPerformerImpl implements ScanPerformer{
         Map<String, String> res = new HashMap<>();
         for (String question: quiz.keySet()) {
             System.out.printf(question + localesRepository.localManagerGetChoice(), quiz.get(question).get(0), quiz.get(question).get(1));
-            String response = scanner.nextLine();
+            String response = scannerWrapper.getLine();
             res.put(question, response);
         }
         return res;

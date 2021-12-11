@@ -14,8 +14,8 @@ class LocalesRepositoryImplTest {
     @Test
     public void testRequestName() {
         String actual = localeManager.getBundle().getString("name-request");
-        Assertions.assertEquals(localeManager.getBundle().getString("name-request"),
-                "Введите Ваше имя");
+        String expected = "Введите Ваше имя";
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test

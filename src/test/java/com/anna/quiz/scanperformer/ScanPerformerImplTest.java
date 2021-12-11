@@ -1,17 +1,15 @@
 package com.anna.quiz.scanperformer;
 
 import com.anna.quiz.conf.LocalesRepository;
+import com.anna.quiz.scannerwrapper.ScannerWrapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import static org.mockito.Mockito.when;
 
@@ -21,7 +19,7 @@ class ScanPerformerImplTest {
     private final ScanPerformer scanPerformer;
 
     @MockBean
-    private Scanner scanner;
+    private ScannerWrapper scannerWrapper;
 
     @MockBean
     private LocalesRepository localesRepository;
@@ -34,9 +32,10 @@ class ScanPerformerImplTest {
     public void requestName(){
         String name = "Anna S";
         when(localesRepository.requestName()).thenReturn("Введите ваше имя");
-        when(scanner.nextLine()).thenReturn(name);
+        when(scannerWrapper.getLine()).thenReturn(name);
 
         String receivedName = scanPerformer.requestName();
+
         Assertions.assertEquals(receivedName, name);
     }
 
