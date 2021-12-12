@@ -1,46 +1,27 @@
 package com.anna.quiz.loaders;
 
-import com.anna.quiz.domain.Quiz;
-import com.anna.quiz.quizinitializer.Initializer;
-import com.anna.quiz.scanperformer.ScanPerformerImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 
-import java.util.List;
 import java.util.Map;
+
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class AnswersLoaderImplTest {
-    @MockBean Quiz quiz;
-
     @Autowired
-    private AnswersLoaderImpl answerLoader;
-
-    @MockBean
-    @Qualifier("questionLoaderImpl")
-    private static DataLoader<String, List<String>> questionLoader;
-    @MockBean
     @Qualifier("answersLoaderImpl")
-    private static DataLoader<String, String> answersLoader;
-    @MockBean
-    private static ScanPerformerImpl tester;
+    private DataLoader<String, String> answersLoader;
 
-    @TestConfiguration
-    static class Configs {
-        @Bean(value = "testInitializer")
-        Initializer initializer() {
-            return new Initializer(questionLoader, answersLoader, tester);
-        }
+    public AnswersLoaderImplTest(@Qualifier(value = "answersLoaderImpl")DataLoader<String, String> answersLoader) {
+        this.answersLoader = answersLoader;
     }
 
-    @DisplayName("возвращает ди соответствующие данные в соответствующей локали: ")
+    @DisplayName("возвращает ли соответствующие данные для квиза: ")
     @Test
     void loadData() {
         Map<String, String> expected = Map.of(
@@ -49,7 +30,9 @@ class AnswersLoaderImplTest {
                 "Население США в млн", "335",
                 "Порода собак из Китая", "мопс",
                 "Население Шотландии в млн","Эдинбург");
-        Map<String, String> actual = answerLoader.loadData();
+
+        when(answersLoader.receiveDataSource()).thenReturn("src/test/resources/META-INF/answers.csv");
+        Map<String, String> actual = answersLoader.loadData();
 
         Assertions.assertEquals(expected, actual);
     }

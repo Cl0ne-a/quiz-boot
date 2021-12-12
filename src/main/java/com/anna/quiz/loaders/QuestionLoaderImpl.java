@@ -20,6 +20,8 @@ public class QuestionLoaderImpl implements DataLoader {
     @Autowired
     private Quiz quiz;
     @Autowired
+    ScanReader reader;
+    @Autowired
     private LocaleManager localeManager;
     @Value("${DataLoader.question}")
     private String question;
@@ -29,9 +31,13 @@ public class QuestionLoaderImpl implements DataLoader {
     private String optionB;
 
     @Override
+    public String receiveDataSource() {
+        return quiz.getQuestions();
+    }
+
+    @Override
     public Map<String, List<String>> loadData() {
-        String source = quiz.getQuestions();
-        var questions = ScanReader.readCsv(source);
+        var questions = reader.readCsv(receiveDataSource());
         var iterableFromRecords = records(questions);
 
         return composeMap(iterableFromRecords);
@@ -55,10 +61,10 @@ public class QuestionLoaderImpl implements DataLoader {
     private Map<String, List<String>> composeMap(Iterable<CSVRecord> records) {
         Map<String, List<String>> quizMap = new HashMap<>();
         for (CSVRecord record : records) {
-            String country = ScanReader.getStringFromBundle(localeManager, record, question);
+            String country = reader.getStringFromBundle(localeManager, record, question);
 
-            String opt1 = ScanReader.getStringFromBundle(localeManager, record, optionA);
-            String opt2 = ScanReader.getStringFromBundle(localeManager, record, optionB);
+            String opt1 = reader.getStringFromBundle(localeManager, record, optionA);
+            String opt2 = reader.getStringFromBundle(localeManager, record, optionB);
             quizMap.put(country, List.of(opt1, opt2));
         }
         return quizMap;

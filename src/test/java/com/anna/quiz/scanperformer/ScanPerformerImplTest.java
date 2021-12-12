@@ -3,10 +3,12 @@ package com.anna.quiz.scanperformer;
 import com.anna.quiz.conf.LocalesRepository;
 import com.anna.quiz.scannerwrapper.ScannerWrapper;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 import java.util.Map;
@@ -15,30 +17,32 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class ScanPerformerImplTest {
-    @Autowired
-    private final ScanPerformer scanPerformer;
 
-    @MockBean
+    @Mock
     private ScannerWrapper scannerWrapper;
 
-    @MockBean
+    @Mock
     private LocalesRepository localesRepository;
 
-    public ScanPerformerImplTest(ScanPerformer scanPerformer) {
+    @Qualifier("scanPerformerImpl")
+    @Autowired
+    private ScanPerformer scanPerformer;
+
+    public ScanPerformerImplTest(@Qualifier("scanPerformerImpl") ScanPerformer scanPerformer) {
         this.scanPerformer = scanPerformer;
     }
 
+    @DisplayName("Возвращает введенное имя")
     @Test
     public void requestName(){
         String name = "Anna S";
-        when(localesRepository.requestName()).thenReturn("Введите ваше имя");
-        when(scannerWrapper.getLine()).thenReturn(name);
+        when(scannerWrapper.receiveName(localesRepository)).thenReturn(name);
 
-        String receivedName = scanPerformer.requestName();
+        when(scanPerformer.requestName()).thenReturn(scannerWrapper.receiveName(localesRepository));
 
-        Assertions.assertEquals(receivedName, name);
     }
 
+    @DisplayName("Правильно тестирует введенные ответы")
     @Test
     public void testStudent() {
         Map<String, List<String>> quiz = Map.of("A", List.of("A1", "A2"));

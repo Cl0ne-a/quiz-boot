@@ -23,11 +23,16 @@ public class ScanPerformerImpl implements ScanPerformer{
     @Override
     public String requestName() {
         System.out.println(localesRepository.requestName());
+
+        this.name = scannerWrapper.receiveName(localesRepository);
+        return name;
+    }
+
+    public String receiveName() {
         String name;
         while ((name = scannerWrapper.getLine()).isEmpty()) {
             System.out.println(localesRepository.requestName());
         }
-        this.name = name;
         return name;
     }
 

@@ -9,6 +9,6 @@ public class QuizBootApplication {
 
     public static void main(String[] args) {
         var ctx = SpringApplication.run(QuizBootApplication.class, args);
-        ctx.getBean(Initializer.class);
+        ctx.getBean(Initializer.class).init();
     }
 }

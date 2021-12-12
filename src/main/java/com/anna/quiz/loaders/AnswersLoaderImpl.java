@@ -3,6 +3,7 @@ package com.anna.quiz.loaders;
 import com.anna.quiz.conf.LocaleManager;
 import com.anna.quiz.csvreader.ScanReader;
 import com.anna.quiz.domain.Quiz;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class AnswersLoaderImpl implements DataLoader{
     @Autowired
     private Quiz quiz;
+    @Autowired
+    ScanReader reader;
     @Autowired
     private LocaleManager localeManager;
     @Value("${DataLoader.question}")
@@ -25,15 +29,18 @@ public class AnswersLoaderImpl implements DataLoader{
     private String answer;
 
     @Override
-    public Map<String, String> loadData() {
-        String source = quiz.getAnswers();
+    public String receiveDataSource() {
+        return quiz.getAnswers();
+    }
 
-        var iterableFromRecords = records(source);
+    @Override
+    public Map<String, String> loadData() {
+        var iterableFromRecords = records(receiveDataSource());
         return composeMap(iterableFromRecords);
     }
 
     private Iterable<CSVRecord> records(String source) {
-        var answers = ScanReader.readCsv(source);
+        var answers = reader.readCsv(source);
         Iterable<CSVRecord> records = null;
         try {
             records = CSVFormat.RFC4180.withHeader(
@@ -49,9 +56,9 @@ public class AnswersLoaderImpl implements DataLoader{
     private Map<String, String> composeMap(Iterable<CSVRecord> records) {
         Map<String, String> quizMap = new HashMap<>();
         for (CSVRecord record : records) {
-            String request = ScanReader.getStringFromBundle(localeManager, record, question);
+            String request = reader.getStringFromBundle(localeManager, record, question);
 
-            String response = ScanReader.getStringFromBundle(localeManager, record, answer);
+            String response = reader.getStringFromBundle(localeManager, record, answer);
             quizMap.put(request, response);
         }
         return quizMap;

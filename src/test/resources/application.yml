@@ -1,0 +1,15 @@
+quiz:
+  questions: src/main/resources/META-INF/questions.csv
+  answers: src/main/resources/META-INF/answers.csv
+spring:
+  messages:
+    basename: messages
+LocaleManager:
+  language: ru
+  country: RU
+  bName: messages
+DataLoader:
+  question: question
+  answer: answer
+  option-1: opt1
+  option-2: opt2

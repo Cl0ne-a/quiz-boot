@@ -1,5 +1,6 @@
 package com.anna.quiz.scannerwrapper;
 
+import com.anna.quiz.conf.LocalesRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
@@ -15,5 +16,13 @@ public class ScannerWrapper {
 
     public String getLine() {
         return scanner.nextLine();
+    }
+
+    public String receiveName(LocalesRepository localesRepository) {
+        String name;
+        while ((name = this.getLine()).isEmpty()) {
+            System.out.println(localesRepository.requestName());
+        }
+        return name;
     }
 }
