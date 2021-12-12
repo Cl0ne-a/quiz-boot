@@ -1,8 +1,10 @@
 package com.anna.quiz.loaders;
 
+import com.anna.quiz.domain.Quiz;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +15,9 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class AnswersLoaderImplTest {
+
+    @Mock
+    private Quiz quiz;
     @Autowired
     @Qualifier("answersLoaderImpl")
     private DataLoader<String, String> answersLoader;
@@ -31,7 +36,7 @@ class AnswersLoaderImplTest {
                 "Порода собак из Китая", "мопс",
                 "Население Шотландии в млн","Эдинбург");
 
-        when(answersLoader.receiveDataSource()).thenReturn("src/test/resources/META-INF/answers.csv");
+        when(quiz.getAnswers()).thenReturn("src/test/resources/META-INF/answers.csv");
         Map<String, String> actual = answersLoader.loadData();
 
         Assertions.assertEquals(expected, actual);

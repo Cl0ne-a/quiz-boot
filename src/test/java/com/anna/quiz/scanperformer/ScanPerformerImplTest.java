@@ -2,6 +2,7 @@ package com.anna.quiz.scanperformer;
 
 import com.anna.quiz.conf.LocalesRepository;
 import com.anna.quiz.scannerwrapper.ScannerWrapper;
+import com.anna.quiz.teacher.Teacher;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 import java.util.Map;
 
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -24,36 +28,38 @@ class ScanPerformerImplTest {
     @Mock
     private LocalesRepository localesRepository;
 
-    @Qualifier("scanPerformerImpl")
+    @Mock
+    @Qualifier("checkUpRoutine") private Teacher teacher;
+
+    @Qualifier("testPerformerImpl")
     @Autowired
-    private ScanPerformer scanPerformer;
+    private TestPerformer scanPerformer;
 
-    public ScanPerformerImplTest(@Qualifier("scanPerformerImpl") ScanPerformer scanPerformer) {
+    public ScanPerformerImplTest(@Qualifier("testPerformerImpl") TestPerformer scanPerformer) {
         this.scanPerformer = scanPerformer;
-    }
-
-    @DisplayName("Возвращает введенное имя")
-    @Test
-    public void requestName(){
-        String name = "Anna S";
-        when(scannerWrapper.receiveName(localesRepository)).thenReturn(name);
-
-        when(scanPerformer.requestName()).thenReturn(scannerWrapper.receiveName(localesRepository));
-
     }
 
     @DisplayName("Правильно тестирует введенные ответы")
     @Test
     public void testStudent() {
         Map<String, List<String>> quiz = Map.of("A", List.of("A1", "A2"));
-        Map<String, String> answerKeys = Map.of("A", "A1");
+        Map<String, String> answerKeys = Map.of("A", "A2");
+        Map<String, String> studentsAnswers = Map.of("A", "A1");
 
-        when(scanPerformer.test(Map.of("A", List.of("A1", "A2")))).thenReturn(Map.of("A", "A2"));
+        String name = "Anna S";
 
-        var actual = scanPerformer.testStudent(
-                quiz,
-                answerKeys);
+        when(teacher.firstInstruction()).thenReturn("some info");
+        when(teacher.requestName()).thenReturn(name);
+        when(teacher.test(quiz)).thenReturn(studentsAnswers);
+        when(teacher.check(studentsAnswers, answerKeys)).thenReturn(List.of("A2"));
 
-        Assertions.assertEquals(List.of("A = A1"), actual);
+        var actual = scanPerformer.testStudent(quiz, answerKeys);
+
+        verify(teacher.firstInstruction(), atLeastOnce());
+        verify(teacher.requestName(), atLeastOnce());
+        verify(teacher.test(quiz), times(1));
+        verify(teacher.check(studentsAnswers, answerKeys), times(1));
+
+        Assertions.assertEquals(List.of("A = A2"), actual);
     }
 }

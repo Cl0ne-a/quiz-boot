@@ -1,4 +1,4 @@
-package com.anna.quiz.scanperformer;
+package com.anna.quiz.teacher;
 
 import com.anna.quiz.conf.LocalesRepository;
 import com.anna.quiz.scannerwrapper.ScannerWrapper;
@@ -6,14 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class ScanPerformerImpl implements ScanPerformer{
-
-    public String name;
+public class CheckUpRoutine implements Teacher{
+    private String name;
 
     @Autowired
     private ScannerWrapper scannerWrapper;
@@ -28,42 +26,21 @@ public class ScanPerformerImpl implements ScanPerformer{
         return name;
     }
 
-    public String receiveName() {
-        String name;
-        while ((name = scannerWrapper.getLine()).isEmpty()) {
-            System.out.println(localesRepository.requestName());
-        }
-        return name;
-    }
-
     @Override
-    public List<String> testStudent(Map<String, List<String>> quiz, Map<String, String> correctAnswers) {
-        firstInstruction();
-        Map<String, String> answersFromStudent = test(quiz);
-        return check(answersFromStudent, correctAnswers);
-    }
-
-    @Override
-    public void firstInstruction() {
+    public String firstInstruction() {
         String name = requestName();
-        System.out.printf(localesRepository.requestOptions(), name);
+        return String.format(localesRepository.requestOptions(), name);
     }
 
     @Override
     public Map<String, String> test(Map<String, List<String>> quiz) {
-        Map<String, String> res = new HashMap<>();
-        for (String question: quiz.keySet()) {
-            System.out.printf(question + localesRepository.localManagerGetChoice(), quiz.get(question).get(0), quiz.get(question).get(1));
-            String response = scannerWrapper.getLine();
-            res.put(question, response);
-        }
-        return res;
+        return scannerWrapper.receiveStudentsAnswers(quiz, localesRepository);
     }
 
     @Override
-    public List<String> check(Map<String, String> stdIn, Map<String, String> correctAnswers) {
+    public List<String> check(Map<String, String> studentsAnswers, Map<String, String> correctAnswers) {
         List<String> testResult = new ArrayList<>();
-        stdIn.forEach((key, val) -> {
+        studentsAnswers.forEach((key, val) -> {
             if (!correctAnswers.get(key).equalsIgnoreCase(val)) {
                 testResult.add(key.concat(" = ").concat(correctAnswers.get(key)));
             }
