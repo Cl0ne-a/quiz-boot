@@ -1,4 +1,4 @@
-package com.anna.quiz.scanperformer;
+package com.anna.quiz.testperformer;
 
 import com.anna.quiz.teacher.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,6 @@ import java.util.Map;
 
 @Service
 public class TestPerformerImpl implements TestPerformer {
-
-    public String name;
 
     @Autowired
     @Qualifier("checkUpRoutine") private Teacher teacher;

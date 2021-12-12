@@ -1,6 +1,6 @@
 package com.anna.quiz;
 
-import com.anna.quiz.quizinitializer.Initializer;
+import com.anna.quiz.testinitializer.Initializer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

@@ -1,4 +1,4 @@
-package com.anna.quiz.scanperformer;
+package com.anna.quiz.testperformer;
 
 import com.anna.quiz.conf.LocalesRepository;
 import com.anna.quiz.scannerwrapper.ScannerWrapper;

@@ -1,7 +1,7 @@
-package com.anna.quiz.quizinitializer;
+package com.anna.quiz.testinitializer;
 
 import com.anna.quiz.loaders.DataLoader;
-import com.anna.quiz.scanperformer.TestPerformerImpl;
+import com.anna.quiz.testperformer.TestPerformerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

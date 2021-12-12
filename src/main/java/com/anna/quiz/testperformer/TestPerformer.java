@@ -1,4 +1,4 @@
-package com.anna.quiz.scanperformer;
+package com.anna.quiz.testperformer;
 
 import java.util.List;
 import java.util.Map;
