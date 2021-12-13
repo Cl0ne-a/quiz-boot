@@ -9,14 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Service(value = "checkUpRoutine")
 public class CheckUpRoutine implements Teacher{
     private String name;
 
+    private final ScannerWrapper scannerWrapper;
+    private final LocalesRepository localesRepository;
+
     @Autowired
-    private ScannerWrapper scannerWrapper;
-    @Autowired
-    private LocalesRepository localesRepository;
+    public CheckUpRoutine(ScannerWrapper scannerWrapper, LocalesRepository localesRepository) {
+        this.scannerWrapper = scannerWrapper;
+        this.localesRepository = localesRepository;
+    }
 
     @Override
     public String requestName() {

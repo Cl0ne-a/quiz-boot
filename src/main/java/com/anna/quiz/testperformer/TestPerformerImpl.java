@@ -11,8 +11,12 @@ import java.util.Map;
 @Service
 public class TestPerformerImpl implements TestPerformer {
 
+    private Teacher teacher;
+
     @Autowired
-    @Qualifier("checkUpRoutine") private Teacher teacher;
+    public TestPerformerImpl( @Qualifier("checkUpRoutine")Teacher teacher) {
+        this.teacher = teacher;
+    }
 
     @Override
     public List<String> testStudent(Map<String, List<String>> quiz, Map<String, String> correctAnswers) {

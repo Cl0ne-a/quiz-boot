@@ -1,7 +1,6 @@
 package com.anna.quiz.testperformer;
 
-import com.anna.quiz.conf.LocalesRepository;
-import com.anna.quiz.scannerwrapper.ScannerWrapper;
+import com.anna.quiz.teacher.CheckUpRoutine;
 import com.anna.quiz.teacher.Teacher;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -10,34 +9,41 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.List;
 import java.util.Map;
 
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 @SpringBootTest
-class ScanPerformerImplTest {
+class TestPerformerImplTest {
 
-    @Mock
-    private ScannerWrapper scannerWrapper;
+    @Configuration
+    static class ContextConfiguration {
 
-    @Mock
-    private LocalesRepository localesRepository;
-
-    @Mock
-    @Qualifier("checkUpRoutine") private Teacher teacher;
-
-    @Qualifier("testPerformerImpl")
-    @Autowired
-    private TestPerformer scanPerformer;
-
-    public ScanPerformerImplTest(@Qualifier("testPerformerImpl") TestPerformer scanPerformer) {
-        this.scanPerformer = scanPerformer;
+        @Bean(value = "checkUpRoutine")
+        public Teacher teacher() {
+            return mock(CheckUpRoutine.class);
+        }
+        @Bean
+        public TestPerformer testPerformer() {
+            return new TestPerformerImpl(teacher());
+        }
     }
+    @Autowired
+    private Teacher teacher;
+
+    @Autowired
+    private TestPerformer testPerformerImpl;
 
     @DisplayName("Правильно тестирует введенные ответы")
     @Test
@@ -53,7 +59,7 @@ class ScanPerformerImplTest {
         when(teacher.test(quiz)).thenReturn(studentsAnswers);
         when(teacher.check(studentsAnswers, answerKeys)).thenReturn(List.of("A2"));
 
-        var actual = scanPerformer.testStudent(quiz, answerKeys);
+        var actual = testPerformerImpl.testStudent(quiz, answerKeys);
 
         verify(teacher.firstInstruction(), atLeastOnce());
         verify(teacher.requestName(), atLeastOnce());
