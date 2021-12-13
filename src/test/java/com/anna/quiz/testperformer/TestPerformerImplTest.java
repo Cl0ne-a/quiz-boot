@@ -23,6 +23,11 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 @SpringBootTest
 class TestPerformerImplTest {
+    @Autowired
+    private Teacher teacher;
+
+    @Autowired
+    private TestPerformer testPerformerImpl;
 
     @Configuration
     static class ContextConfiguration {
@@ -31,16 +36,12 @@ class TestPerformerImplTest {
         public Teacher teacher() {
             return mock(CheckUpRoutine.class);
         }
+
         @Bean(value = "testPerformerImpl")
         public TestPerformer testPerformer() {
             return new TestPerformerImpl(teacher());
         }
     }
-    @Autowired
-    private Teacher teacher;
-
-    @Autowired
-    private TestPerformer testPerformerImpl;
 
     @DisplayName("Правильно тестирует введенные ответы")
     @Test
@@ -58,11 +59,10 @@ class TestPerformerImplTest {
 
         var actual = testPerformerImpl.testStudent(quiz, answerKeys);
 
-        verify(teacher.firstInstruction(), atLeastOnce());
-        verify(teacher.requestName(), atLeastOnce());
-        verify(teacher.test(quiz), times(1));
-        verify(teacher.check(studentsAnswers, answerKeys), times(1));
+        verify(teacher, atLeastOnce()).firstInstruction();
+        verify(teacher, times(1)).test(quiz);
+        verify(teacher, times(1)).check(studentsAnswers, answerKeys);
 
-        Assertions.assertEquals(List.of("A = A2"), actual);
+        Assertions.assertEquals(List.of("A2"), actual);
     }
 }
