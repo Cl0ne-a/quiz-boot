@@ -5,11 +5,8 @@ import com.anna.quiz.teacher.Teacher;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
@@ -34,7 +31,7 @@ class TestPerformerImplTest {
         public Teacher teacher() {
             return mock(CheckUpRoutine.class);
         }
-        @Bean
+        @Bean(value = "testPerformerImpl")
         public TestPerformer testPerformer() {
             return new TestPerformerImpl(teacher());
         }

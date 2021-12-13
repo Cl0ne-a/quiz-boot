@@ -11,7 +11,7 @@ import java.util.Map;
 @Service
 public class TestPerformerImpl implements TestPerformer {
 
-    private Teacher teacher;
+    private final Teacher teacher;
 
     @Autowired
     public TestPerformerImpl( @Qualifier("checkUpRoutine")Teacher teacher) {
