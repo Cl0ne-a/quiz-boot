@@ -21,6 +21,7 @@ public class ScannerWrapper {
     }
 
     public String receiveName(LocalesRepository localesRepository) {
+        System.out.println(localesRepository.requestName());
         String name;
         while ((name = this.getLine()).isEmpty()) {
             System.out.println(localesRepository.requestName());

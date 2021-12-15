@@ -15,7 +15,6 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class AnswersLoaderImplTest {
-
     @Mock
     private Quiz quiz;
     @Autowired

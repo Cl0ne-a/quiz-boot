@@ -16,17 +16,25 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class AnswersLoaderImpl implements DataLoader{
-    @Autowired
+public class AnswersLoaderImpl implements DataLoader {
     private Quiz quiz;
-    @Autowired
-    ScanReader reader;
-    @Autowired
+    private ScanReader reader;
     private LocaleManager localeManager;
-    @Value("${DataLoader.question}")
     private String question;
-    @Value("${DataLoader.option-1}")
     private String answer;
+
+    @Autowired
+    public AnswersLoaderImpl(Quiz quiz,
+                             ScanReader reader,
+                             LocaleManager localeManager,
+                             @Value("${DataLoader.question}") String question,
+                             @Value("${DataLoader.option-1}") String answer) {
+        this.quiz = quiz;
+        this.reader = reader;
+        this.localeManager = localeManager;
+        this.question = question;
+        this.answer = answer;
+    }
 
     @Override
     public String receiveDataSource() {

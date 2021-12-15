@@ -24,8 +24,6 @@ public class CheckUpRoutine implements Teacher{
 
     @Override
     public String requestName() {
-        System.out.println(localesRepository.requestName());
-
         this.name = scannerWrapper.receiveName(localesRepository);
         return name;
     }
