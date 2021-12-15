@@ -1,4 +1,4 @@
-package com.anna.quizboot.domain;
+package com.anna.quiz.domain;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
