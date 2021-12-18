@@ -31,16 +31,6 @@ class ScanPerformerImplTest {
     }
 
     @Test
-    public void requestName(){
-        String name = "Anna S";
-        when(localesRepository.requestName()).thenReturn("Введите ваше имя");
-        when(scanner.nextLine()).thenReturn(name);
-
-        String receivedName = scanPerformer.requestName();
-        Assertions.assertEquals(receivedName, name);
-    }
-
-    @Test
     public void testStudent() {
         Map<String, List<String>> quiz = Map.of("A", List.of("A1", "A2"));
         Map<String, String> answerKeys = Map.of("A", "A1");

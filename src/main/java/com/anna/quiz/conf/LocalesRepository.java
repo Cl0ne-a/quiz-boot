@@ -6,4 +6,6 @@ public interface LocalesRepository {
     String requestOptions();
     String getResult();
     String getAdvice();
+    String readyToContinue();
+    String exit();
 }

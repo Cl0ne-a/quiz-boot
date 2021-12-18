@@ -10,12 +10,12 @@ import java.util.Map;
 
 @Service
 public class Initializer {
-    @Autowired
     @Qualifier("questionLoaderImpl")
-    private DataLoader<String, List<String>> questionLoader;
-    @Autowired
+    private final DataLoader<String, List<String>> questionLoader;
+
     @Qualifier("answersLoaderImpl")
-    private DataLoader<String, String> answersLoader;
+    private final DataLoader<String, String> answersLoader;
+
     @Autowired
     private ScanPerformerImpl tester;
 
@@ -25,7 +25,6 @@ public class Initializer {
         this.questionLoader = questionLoader;
         this.answersLoader = answersLoader;
         this.tester = tester;
-        this.init();
     }
 
     public void init() {

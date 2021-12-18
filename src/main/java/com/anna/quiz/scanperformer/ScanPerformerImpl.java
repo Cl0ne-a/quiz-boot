@@ -11,10 +11,10 @@ import java.util.Map;
 import java.util.Scanner;
 
 @Service
-public class ScanPerformerImpl implements ScanPerformer{
+public class ScanPerformerImpl implements ScanPerformer {
 
     private final Scanner scanner;
-    public String name;
+    public static String name;
 
     @Autowired
     private LocalesRepository localesRepository;
@@ -24,34 +24,19 @@ public class ScanPerformerImpl implements ScanPerformer{
     }
 
     @Override
-    public String requestName() {
-        System.out.println(localesRepository.requestName());
-        String name;
-        while ((name = scanner.nextLine()).isEmpty()) {
-            System.out.println(localesRepository.requestName());
-        }
-        this.name = name;
-        return name;
-    }
-
-    @Override
     public List<String> testStudent(Map<String, List<String>> quiz, Map<String, String> correctAnswers) {
-        firstInstruction();
         Map<String, String> answersFromStudent = test(quiz);
         return check(answersFromStudent, correctAnswers);
-    }
-
-    @Override
-    public void firstInstruction() {
-        String name = requestName();
-        System.out.printf(localesRepository.requestOptions(), name);
     }
 
     @Override
     public Map<String, String> test(Map<String, List<String>> quiz) {
         Map<String, String> res = new HashMap<>();
         for (String question: quiz.keySet()) {
-            System.out.printf(question + localesRepository.localManagerGetChoice(), quiz.get(question).get(0), quiz.get(question).get(1));
+            System.out.printf(
+                    question + localesRepository.localManagerGetChoice(),
+                    quiz.get(question).get(0),
+                    quiz.get(question).get(1));
             String response = scanner.nextLine();
             res.put(question, response);
         }
@@ -60,17 +45,20 @@ public class ScanPerformerImpl implements ScanPerformer{
 
     @Override
     public List<String> check(Map<String, String> stdIn, Map<String, String> correctAnswers) {
-        List<String> testResult = new ArrayList<>();
+        List<String> twrongTestAnswers = new ArrayList<>();
         stdIn.forEach((key, val) -> {
             if (!correctAnswers.get(key).equalsIgnoreCase(val)) {
-                testResult.add(key.concat(" = ").concat(correctAnswers.get(key)));
+                twrongTestAnswers.add(key.concat(" = ").concat(correctAnswers.get(key)));
             }
         });
-        if (testResult.size() > 3) {
+        if (twrongTestAnswers.size() > 3) {
             System.out.printf(localesRepository.getAdvice(), name);
         } else {
-            System.out.printf(localesRepository.getResult(), name);
+            System.out.printf(localesRepository.getResult(),
+                    name,
+                    twrongTestAnswers.size(),
+                    correctAnswers.size());
         }
-        return testResult;
+        return twrongTestAnswers;
     }
 }

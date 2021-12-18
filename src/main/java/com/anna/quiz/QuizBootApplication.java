@@ -1,6 +1,5 @@
 package com.anna.quiz;
 
-import com.anna.quiz.quizinitializer.Initializer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,6 +8,5 @@ public class QuizBootApplication {
 
     public static void main(String[] args) {
         var ctx = SpringApplication.run(QuizBootApplication.class, args);
-        ctx.getBean(Initializer.class);
     }
 }
