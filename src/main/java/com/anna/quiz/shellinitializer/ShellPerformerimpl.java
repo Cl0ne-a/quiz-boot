@@ -29,14 +29,15 @@ public class ShellPerformerimpl implements ShellPerformer{
 
     @ShellMethod(key = "n", value = "step 1")
     @ShellMethodAvailability(value = "nameValue")
-    public String firstInstruction(@ShellOption(defaultValue = "guest") String name) {
+    public String firstInstruction(
+            @ShellOption(defaultValue = "guest")
+                    String name) {
         ScanPerformerImpl.name = name;
         System.out.printf(localesRepository.requestOptions(), name);
         return localesRepository.readyToContinue();
     }
 
     @ShellMethod(key = "run", value = "step 2")
-    @ShellMethodAvailability(value = "ready")
     public void getResponse(@ShellOption(defaultValue = "-") String response) {
         readyToContinue = response;
         initializer.init();
@@ -48,6 +49,7 @@ public class ShellPerformerimpl implements ShellPerformer{
                 :Availability.available();
     }
 
+    @ShellMethodAvailability("getResponse")
     private Availability ready() {
         return readyToContinue.equals("-")
                 ? Availability.unavailable(localesRepository.exit())

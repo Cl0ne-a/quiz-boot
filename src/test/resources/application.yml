@@ -1,0 +1,11 @@
+LocaleManager:
+  lang: ru
+  location: RU
+  name: messages
+spring:
+  shell:
+    interactive:
+      enabled: false
+  main:
+    allow-circular-references: true
+
