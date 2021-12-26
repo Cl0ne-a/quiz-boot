@@ -50,7 +50,7 @@ public class CheckUpRoutine implements Teacher{
         if (testResult.size() > 3) {
             System.out.printf(localesRepository.getAdvice(), Quiz.studentsName);
         } else {
-            System.out.printf(localesRepository.getResult(), Quiz.studentsName);
+            System.out.printf(localesRepository.getResult(), Quiz.studentsName, studentsAnswers.size(), correctAnswers.size());
         }
         return testResult;
     }
