@@ -1,6 +1,7 @@
 package com.anna.quiz.teacher;
 
 import com.anna.quiz.conf.LocalesRepository;
+import com.anna.quiz.domain.Quiz;
 import com.anna.quiz.scannerwrapper.ScannerWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,12 +12,10 @@ import java.util.Map;
 
 @Service(value = "checkUpRoutine")
 public class CheckUpRoutine implements Teacher{
-    public static String name;
+//    public static String name;
 
     private final ScannerWrapper scannerWrapper;
     private final LocalesRepository localesRepository;
-
-
 
     @Autowired
     public CheckUpRoutine(ScannerWrapper scannerWrapper, LocalesRepository localesRepository) {
@@ -25,14 +24,14 @@ public class CheckUpRoutine implements Teacher{
     }
 
     @Override
-    public String requestName() {
-        name = scannerWrapper.receiveName(localesRepository);
-        return name;
+    public void requestName() {
+        Quiz.studentsName = scannerWrapper.receiveName(localesRepository);
+//        return ;
     }
 
     @Override
     public String firstInstruction() {
-        return String.format(localesRepository.requestOptions(), name);
+        return String.format(localesRepository.requestOptions(), Quiz.studentsName);
     }
 
     @Override
@@ -49,9 +48,9 @@ public class CheckUpRoutine implements Teacher{
             }
         });
         if (testResult.size() > 3) {
-            System.out.printf(localesRepository.getAdvice(), name);
+            System.out.printf(localesRepository.getAdvice(), Quiz.studentsName);
         } else {
-            System.out.printf(localesRepository.getResult(), name);
+            System.out.printf(localesRepository.getResult(), Quiz.studentsName);
         }
         return testResult;
     }

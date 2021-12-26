@@ -1,6 +1,7 @@
 package com.anna.quiz.shellinitializer;
 
 import com.anna.quiz.conf.LocalesRepository;
+import com.anna.quiz.domain.Quiz;
 import com.anna.quiz.teacher.CheckUpRoutine;
 import com.anna.quiz.testinitializer.Initializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class ShellPerformerimpl implements ShellPerformer{
     public String firstInstruction(
             @ShellOption(defaultValue = "Mr. Incognito")
                     String name) {
-        CheckUpRoutine.name = name;
+        Quiz.studentsName = name;
         return String.format(localesRepository.readyToContinue(), name);
     }
 
