@@ -11,10 +11,12 @@ import java.util.Map;
 
 @Service(value = "checkUpRoutine")
 public class CheckUpRoutine implements Teacher{
-    private String name;
+    public static String name;
 
     private final ScannerWrapper scannerWrapper;
     private final LocalesRepository localesRepository;
+
+
 
     @Autowired
     public CheckUpRoutine(ScannerWrapper scannerWrapper, LocalesRepository localesRepository) {
@@ -24,13 +26,12 @@ public class CheckUpRoutine implements Teacher{
 
     @Override
     public String requestName() {
-        this.name = scannerWrapper.receiveName(localesRepository);
+        name = scannerWrapper.receiveName(localesRepository);
         return name;
     }
 
     @Override
     public String firstInstruction() {
-        String name = requestName();
         return String.format(localesRepository.requestOptions(), name);
     }
 
