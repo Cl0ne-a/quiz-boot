@@ -28,7 +28,6 @@ public class ShellPerformerimpl implements ShellPerformer{
     }
 
     @ShellMethod(key = "b", value = "step 2")
-    @ShellMethodAvailability(value = "nameValue")
     public String firstInstruction(
             @ShellOption(defaultValue = "Mr. Incognito")
                     String name) {
@@ -40,12 +39,6 @@ public class ShellPerformerimpl implements ShellPerformer{
     public void getResponse(@ShellOption(defaultValue = "-") String response) {
         READY = response;
         initializer.init();
-    }
-
-    private Availability nameValue() {
-        return READY.equals("guest")
-                ? Availability.unavailable(localesRepository.requestName())
-                :Availability.available();
     }
 
     @ShellMethodAvailability("getResponse")
