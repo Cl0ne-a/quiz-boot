@@ -31,4 +31,9 @@ public class LocalesRepositoryImpl implements LocalesRepository {
     public String getAdvice() {
         return localeManager.getBundle().getString("advice");
     }
+
+    @Override
+    public String readyToContinue() {
+        return localeManager.getBundle().getString("ready");
+    }
 }

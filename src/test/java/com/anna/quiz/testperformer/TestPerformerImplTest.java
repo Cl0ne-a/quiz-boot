@@ -53,7 +53,6 @@ class TestPerformerImplTest {
         String name = "Anna S";
 
         when(teacher.firstInstruction()).thenReturn("some info");
-        when(teacher.requestName()).thenReturn(name);
         when(teacher.test(quiz)).thenReturn(studentsAnswers);
         when(teacher.check(studentsAnswers, answerKeys)).thenReturn(List.of("A2"));
 

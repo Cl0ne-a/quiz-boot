@@ -4,6 +4,12 @@ quiz:
 spring:
   messages:
     basename: messages
+  main:
+    allow-circular-references: true
+  shell:
+    interactive:
+      enabled: false
+
 LocaleManager:
   language: ru
   country: RU

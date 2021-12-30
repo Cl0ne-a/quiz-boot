@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class Quiz {
+    public static String studentsName;
+
     @Value("${quiz.questions}")
     private String questions;
 

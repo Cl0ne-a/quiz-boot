@@ -17,11 +17,14 @@ import static org.mockito.Mockito.when;
 class AnswersLoaderImplTest {
     @Mock
     private Quiz quiz;
-    @Autowired
-    @Qualifier("answersLoaderImpl")
+
     private DataLoader<String, String> answersLoader;
 
-    public AnswersLoaderImplTest(@Qualifier(value = "answersLoaderImpl")DataLoader<String, String> answersLoader) {
+    @Autowired
+    public AnswersLoaderImplTest(
+            @Qualifier(
+            value = "answersLoaderImpl")
+                 DataLoader<String, String> answersLoader) {
         this.answersLoader = answersLoader;
     }
 
